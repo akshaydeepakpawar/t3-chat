@@ -1,5 +1,6 @@
 import "./globals.css";
 import { Poppins } from "next/font/google";
+import { ThemeProvider } from "@/components/ui/theme-provider";
 
 const poppins = Poppins({
   subsets: ["latin"],
@@ -12,10 +13,19 @@ export const metadata = {
   description: "this is the t3 chat you can use free models of ai at one place",
 };
 
-export default function RootLayout({children}) {
+export default function RootLayout({ children }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={`${poppins.variable} antialiased`}>{children}</body>
+      <body className={`${poppins.variable} antialiased`}>
+        <ThemeProvider
+          attribute="class"
+          defaultTheme="system"
+          enableSystem
+          disableTransitionOnChange
+        >
+          {children}
+        </ThemeProvider>
+      </body>
     </html>
   );
 }
