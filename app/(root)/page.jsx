@@ -1,6 +1,5 @@
 // import UserButton from "@/modules/authentication/components/user-button";
 import { currentUser } from "@/modules/authentication/actions/index";
-
 import ChatMessageView from "@/modules/chat/components/chat-message-view"
 
 export default async function Home() {
