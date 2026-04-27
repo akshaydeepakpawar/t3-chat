@@ -29,7 +29,7 @@ export function ModelSelector({
   const [open, setOpen] = useState(false);
   const [detailsOpen, setDetailsOpen] = useState(false);
   const [selectedForDetails, setSelectedForDetails] = useState(null);
-  const [searchQuery, setSearchQuery] = useState("")
+  const [searchQuery, setSearchQuery] = useState("");
 
   const selectedModel = models.find((m) => m.id === selectedModelId);
 
@@ -53,15 +53,15 @@ export function ModelSelector({
     setDetailsOpen(true);
   };
 
-    const filteredModels = models.filter((model) => {
-    const query = searchQuery.toLowerCase()
+  const filteredModels = models.filter((model) => {
+    const query = searchQuery.toLowerCase();
     return (
       model.name.toLowerCase().includes(query) ||
       model.description.toLowerCase().includes(query) ||
       model.id.toLowerCase().includes(query) ||
       model.architecture.modality.toLowerCase().includes(query)
-    )
-  })
+    );
+  });
 
   return (
     <>
@@ -73,7 +73,7 @@ export function ModelSelector({
             aria-expanded={open}
             className={cn(
               "h-8 justify-between gap-2 px-2 text-xs hover:bg-accent",
-              className
+              className,
             )}
           >
             <div className="flex items-center gap-1.5 min-w-0">
@@ -86,7 +86,7 @@ export function ModelSelector({
           </Button>
         </PopoverTrigger>
         <PopoverContent className="w-3xl p-0" align="start">
-           <div className="p-3 border-b">
+          <div className="p-3 border-b">
             <div className="relative">
               <Search className="absolute left-2.5 top-2.5 h-4 w-4 text-muted-foreground" />
               <Input
@@ -115,28 +115,46 @@ export function ModelSelector({
                       selectedModelId === model.id && "bg-accent",
                     )}
                     onClick={() => {
-                      onModelSelect(model.id)
-                      setOpen(false)
-                      setSearchQuery("")
+                      onModelSelect(model.id);
+                      setOpen(false);
+                      setSearchQuery("");
                     }}
                   >
                     <div className="flex h-5 items-center">
-                      <Check className={cn("h-4 w-4", selectedModelId === model.id ? "opacity-100" : "opacity-0")} />
+                      <Check
+                        className={cn(
+                          "h-4 w-4",
+                          selectedModelId === model.id
+                            ? "opacity-100"
+                            : "opacity-0",
+                        )}
+                      />
                     </div>
                     <div className="flex-1 min-w-0 space-y-1">
                       <div className="flex items-center gap-2">
-                        <span className="font-medium text-sm leading-none truncate">{model.name}</span>
+                        <span className="font-medium text-sm leading-none truncate">
+                          {model.name}
+                        </span>
                         {isFreeModel(model) && (
-                          <Badge variant="secondary" className="h-4 px-1 text-[10px]">
+                          <Badge
+                            variant="secondary"
+                            className="h-4 px-1 text-[10px]"
+                          >
                             FREE
                           </Badge>
                         )}
                       </div>
-                      <p className="text-xs text-muted-foreground line-clamp-2">{model.description}</p>
+                      <p className="text-xs text-muted-foreground line-clamp-2">
+                        {model.description}
+                      </p>
                       <div className="flex items-center gap-3 text-[10px] text-muted-foreground">
-                        <span>Context: {formatContextLength(model.context_length)}</span>
+                        <span>
+                          Context: {formatContextLength(model.context_length)}
+                        </span>
                         <span>•</span>
-                        <span className="capitalize">{model.architecture.modality.replace("->", " → ")}</span>
+                        <span className="capitalize">
+                          {model.architecture.modality.replace("->", " → ")}
+                        </span>
                       </div>
                     </div>
                     <Button
@@ -163,7 +181,9 @@ export function ModelSelector({
               <Sparkles className="h-5 w-5" />
               {selectedForDetails?.name}
             </DialogTitle>
-            <DialogDescription>Detailed information about this AI model</DialogDescription>
+            <DialogDescription>
+              Detailed information about this AI model
+            </DialogDescription>
           </DialogHeader>
           <ScrollArea className="flex-1 pr-4">
             {selectedForDetails && (
@@ -171,36 +191,53 @@ export function ModelSelector({
                 {/* Description */}
                 <div>
                   <h3 className="text-sm font-semibold mb-2">Description</h3>
-                  <p className="text-sm text-muted-foreground leading-relaxed">{selectedForDetails.description}</p>
+                  <p className="text-sm text-muted-foreground leading-relaxed">
+                    {selectedForDetails.description}
+                  </p>
                 </div>
 
                 <Separator />
 
                 {/* Context & Capabilities */}
                 <div>
-                  <h3 className="text-sm font-semibold mb-3">Context & Capabilities</h3>
+                  <h3 className="text-sm font-semibold mb-3">
+                    Context & Capabilities
+                  </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Context Length</p>
+                      <p className="text-xs text-muted-foreground">
+                        Context Length
+                      </p>
                       <p className="text-sm font-medium">
-                        {formatContextLength(selectedForDetails.context_length)} tokens
+                        {formatContextLength(selectedForDetails.context_length)}{" "}
+                        tokens
                       </p>
                     </div>
                     <div className="space-y-1">
-                      <p className="text-xs text-muted-foreground">Max Completion Tokens</p>
+                      <p className="text-xs text-muted-foreground">
+                        Max Completion Tokens
+                      </p>
                       <p className="text-sm font-medium">
-                        {formatContextLength(selectedForDetails.top_provider.max_completion_tokens)} tokens
+                        {formatContextLength(
+                          selectedForDetails.top_provider.max_completion_tokens,
+                        )}{" "}
+                        tokens
                       </p>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs text-muted-foreground">Modality</p>
                       <p className="text-sm font-medium capitalize">
-                        {selectedForDetails.architecture.modality.replace("->", " → ")}
+                        {selectedForDetails.architecture.modality.replace(
+                          "->",
+                          " → ",
+                        )}
                       </p>
                     </div>
                     <div className="space-y-1">
                       <p className="text-xs text-muted-foreground">Tokenizer</p>
-                      <p className="text-sm font-medium">{selectedForDetails.architecture.tokenizer}</p>
+                      <p className="text-sm font-medium">
+                        {selectedForDetails.architecture.tokenizer}
+                      </p>
                     </div>
                   </div>
                 </div>
@@ -209,26 +246,44 @@ export function ModelSelector({
 
                 {/* Input/Output Modalities */}
                 <div>
-                  <h3 className="text-sm font-semibold mb-3">Supported Modalities</h3>
+                  <h3 className="text-sm font-semibold mb-3">
+                    Supported Modalities
+                  </h3>
                   <div className="grid grid-cols-2 gap-4">
                     <div className="space-y-2">
-                      <p className="text-xs text-muted-foreground">Input Modalities</p>
+                      <p className="text-xs text-muted-foreground">
+                        Input Modalities
+                      </p>
                       <div className="flex flex-wrap gap-1">
-                        {selectedForDetails.architecture.input_modalities.map((modality) => (
-                          <Badge key={modality} variant="outline" className="text-xs">
-                            {modality}
-                          </Badge>
-                        ))}
+                        {selectedForDetails.architecture.input_modalities.map(
+                          (modality) => (
+                            <Badge
+                              key={modality}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {modality}
+                            </Badge>
+                          ),
+                        )}
                       </div>
                     </div>
                     <div className="space-y-2">
-                      <p className="text-xs text-muted-foreground">Output Modalities</p>
+                      <p className="text-xs text-muted-foreground">
+                        Output Modalities
+                      </p>
                       <div className="flex flex-wrap gap-1">
-                        {selectedForDetails.architecture.output_modalities.map((modality) => (
-                          <Badge key={modality} variant="outline" className="text-xs">
-                            {modality}
-                          </Badge>
-                        ))}
+                        {selectedForDetails.architecture.output_modalities.map(
+                          (modality) => (
+                            <Badge
+                              key={modality}
+                              variant="outline"
+                              className="text-xs"
+                            >
+                              {modality}
+                            </Badge>
+                          ),
+                        )}
                       </div>
                     </div>
                   </div>
@@ -244,19 +299,25 @@ export function ModelSelector({
                       <Badge variant="secondary" className="bg-green-500/20">
                         FREE
                       </Badge>
-                      <p className="text-sm text-muted-foreground">This model is completely free to use</p>
+                      <p className="text-sm text-muted-foreground">
+                        This model is completely free to use
+                      </p>
                     </div>
                   ) : (
                     <div className="grid grid-cols-2 gap-3">
-                      {Object.entries(selectedForDetails.pricing).map(([key, value]) => {
-                        if (value === "0") return null
-                        return (
-                          <div key={key} className="space-y-1">
-                            <p className="text-xs text-muted-foreground capitalize">{key.replace("_", " ")}</p>
-                            <p className="text-sm font-medium">${value}</p>
-                          </div>
-                        )
-                      })}
+                      {Object.entries(selectedForDetails.pricing).map(
+                        ([key, value]) => {
+                          if (value === "0") return null;
+                          return (
+                            <div key={key} className="space-y-1">
+                              <p className="text-xs text-muted-foreground capitalize">
+                                {key.replace("_", " ")}
+                              </p>
+                              <p className="text-sm font-medium">${value}</p>
+                            </div>
+                          );
+                        },
+                      )}
                     </div>
                   )}
                 </div>
@@ -265,12 +326,24 @@ export function ModelSelector({
 
                 {/* Provider Info */}
                 <div>
-                  <h3 className="text-sm font-semibold mb-3">Provider Information</h3>
+                  <h3 className="text-sm font-semibold mb-3">
+                    Provider Information
+                  </h3>
                   <div className="space-y-2">
                     <div className="flex items-center justify-between">
-                      <span className="text-sm text-muted-foreground">Content Moderation</span>
-                      <Badge variant={selectedForDetails.top_provider.is_moderated ? "default" : "secondary"}>
-                        {selectedForDetails.top_provider.is_moderated ? "Enabled" : "Disabled"}
+                      <span className="text-sm text-muted-foreground">
+                        Content Moderation
+                      </span>
+                      <Badge
+                        variant={
+                          selectedForDetails.top_provider.is_moderated
+                            ? "default"
+                            : "secondary"
+                        }
+                      >
+                        {selectedForDetails.top_provider.is_moderated
+                          ? "Enabled"
+                          : "Disabled"}
                       </Badge>
                     </div>
                   </div>
@@ -279,7 +352,9 @@ export function ModelSelector({
                 {/* Model ID */}
                 <div>
                   <h3 className="text-sm font-semibold mb-2">Model ID</h3>
-                  <code className="text-xs bg-muted px-2 py-1 rounded block break-all">{selectedForDetails.id}</code>
+                  <code className="text-xs bg-muted px-2 py-1 rounded block break-all">
+                    {selectedForDetails.id}
+                  </code>
                 </div>
               </div>
             )}

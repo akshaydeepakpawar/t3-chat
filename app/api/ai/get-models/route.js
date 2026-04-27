@@ -37,7 +37,7 @@ export async function GET(req) {
     console.error("Error fetching free models:", error);
     return NextResponse.json(
       {
-        success: true,
+        success: false,
         error: error.message || "Failed to fetch free models",
       },
       {
