@@ -1,6 +1,6 @@
 "use client";
 
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Send, Paperclip, Mic, Globe } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import { Textarea } from "@/components/ui/textarea";
@@ -10,28 +10,28 @@ import { useAIModels } from "@/modules/ai-agent/hook/ai-agents";
 import { ModelSelector } from "./model-selector";
 import { Spinner } from "@/components/ui/spinner";
 import { toast } from "sonner";
-// import { useCreateMessageInChat } from "../hooks/chat";
+import { useCreateChat } from "../hooks/chat";
 
-
-export default function MessageForm({model , chatId}) {
+export default function ChatMessageForm({ initialMessage, onMessageChange }) {
   const { data: models, isPending, error } = useAIModels();
-
-  console.log(models)
 
   const [message, setMessage] = useState("");
 
   const [useWebSearch, setUseWebSearch] = useState(false);
-  const [useMicrophone, setUseMicrophone] = useState(false);
-  const [selectedModel, setSelectedModel] = useState(model);
-  // const { mutateAsync, isPending: isChatPending } = useCreateMessageInChat(chatId);
+
+  const [selectedModel, setSelectedModel] = useState(models?.models[0].id);
+  const { mutateAsync, isPending: isChatPending } = useCreateChat();
+
+  useEffect(() => {
+    if (initialMessage) {
+      setMessage(initialMessage);
+      onMessageChange?.("");
+    }
+  }, [initialMessage, onMessageChange]);
 
   const handleSubmit = async (e) => {
-    e.preventDefault();
-
-    if (!message.trim()) return;
-
     try {
-     
+      e.preventDefault();
       await mutateAsync({ content: message, model: selectedModel });
       toast.success("Message sent successfully");
     } catch (error) {
@@ -52,7 +52,7 @@ export default function MessageForm({model , chatId}) {
             value={message}
             onChange={(e) => setMessage(e.target.value)}
             placeholder="Type your message here..."
-            className="min-h-15 max-h-50 resize-none border-0 bg-transparent px-4 py-3 text-base focus-visible:ring-0 focus-visible:ring-offset-0 "
+            className="min-h-[60px] max-h-[200px] resize-none border-0 bg-transparent px-4 py-3 text-base focus-visible:ring-0 focus-visible:ring-offset-0 "
             onKeyDown={(e) => {
               if (e.key === "Enter" && !e.shiftKey) {
                 e.preventDefault();
@@ -65,36 +65,6 @@ export default function MessageForm({model , chatId}) {
           <div className="flex items-center justify-between gap-2 px-3 py-2 border-t ">
             {/* Left side tools */}
             <div className="flex items-center gap-1">
-              <Button
-                // disabled={isChatPending}
-                type="button"
-                variant="ghost"
-                size="sm"
-                className="h-8 w-8 p-0 "
-                aria-label="Attach file"
-                title="Attach file"
-              >
-                <Paperclip className="h-4 w-4" />
-                <span className="sr-only">Attach file</span>
-              </Button>
-
-              <Button
-                type="button"
-                variant={useWebSearch ? "secondary" : "ghost"}
-                size="sm"
-                onClick={() => setUseWebSearch(!useWebSearch)}
-                aria-pressed={useWebSearch}
-                aria-label="Toggle web search"
-                title="Toggle web search"
-                className={cn(
-                  "h-8 px-2 gap-1",
-                  useWebSearch && "ring-2 ring-ring/40"
-                )}
-              >
-                <Globe className="h-4 w-4" />
-                <span className="text-xs">Search</span>
-              </Button>
-
               {isPending ? (
                 <>
                   <Spinner />
@@ -110,7 +80,7 @@ export default function MessageForm({model , chatId}) {
             </div>
 
             {/* Submit Button */}
-            {/* <Button
+            <Button
               type="submit"
               disabled={!message.trim()}
               size="sm"
@@ -121,10 +91,9 @@ export default function MessageForm({model , chatId}) {
                 message.trim() ? "Send message" : "Enter a message to enable"
               }
             >
-            {isChatPending ? <>
-            <Spinner /></>: <><Send className="h-4 w-4" />
-              <span className="sr-only">Send message</span></> }
-            </Button> */}
+              <Send className="h-4 w-4" />
+              <span className="sr-only">Send message</span>
+            </Button>
           </div>
         </div>
       </form>
