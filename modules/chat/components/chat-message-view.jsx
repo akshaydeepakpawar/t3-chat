@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import ChatWelcomeTabs from "@/modules/chat/components/chat-welcome-tabs"
-import MessageForm from "@/modules/chat/components/message-form"
+import MessageForm from "@/modules/chat/components/chat-message-form"
 
 const ChatMessageView = ({ user }) => {
   const [selectedMessage, setselectedMessage] = useState("");
