@@ -49,4 +49,78 @@ export const createChatWithMessage = async (values) => {
   }
 };
 
+export const getAllChats = async () => {
+  try {
+    const user = await currentUser();
 
+    if (!user)
+      return {
+        success: false,
+        message: "Unauthorized user",
+      };
+
+    const chats = await db.Chat.findMany({
+      where: {
+        userId: user.id,
+      },
+      include: {
+        message: true,
+      },
+      orderBy: {
+        createdAt: "desc",
+      },
+    });
+    return {
+      success: true,
+      message: "Chats fetched successfully",
+      data: chats,
+    };
+  } catch (error) {
+    console.error("Error fetching chats:", error);
+    return {
+      success: false,
+      message: "Failed to fetch chats",
+    };
+  }
+};
+
+export const deleteChat = async (chatId) => {
+  try {
+    const user = await currentUser();
+    if (!user)
+      return {
+        success: false,
+        message: "Unauthorized user",
+      };
+
+    const chat = await db.Chat.findFirst({
+      where: {
+        id: chatId,
+        userId: user.id,
+      },
+    });
+    if (!chat) {
+      return {
+        success: false,
+        message: "Chat not found",
+      };
+    }
+
+    await db.Chat.delete({
+      where: {
+        id: chatId,
+      },
+    });
+    revalidatePath("/");
+    return {
+      success: true,
+      message: "Chat deleted successfully",
+    };
+  } catch (error) {
+    console.error("Error deleting chat:", error);
+    return {
+      success: false,
+      message: "Failed to delete chat",
+    };
+  }
+};
