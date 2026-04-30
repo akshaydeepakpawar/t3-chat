@@ -5,6 +5,38 @@ import { currentUser } from "@/modules/authentication/actions";
 import { MessageRole, MessageType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
+export const getChatById = async (chatId) => {
+  const user = await currentUser();
+
+  if (!user)
+    return {
+      success: false,
+      message: "Unauthorized user",
+    };
+  try {
+    const chat = await db.Chat.findUnique({
+      where: {
+        id: chatId,
+        userId: user.id,
+      },
+      include: {
+        message: true,
+      },
+    });
+    return {
+      success: true,
+      message: "chat fetched suiccessfully",
+      data: chat,
+    };
+  } catch (error) {
+    console.error("Error in fetching chat:", error);
+    return {
+      success: false,
+      message: "failed to fetch chat",
+    };
+  }
+};
+
 export const createChatWithMessage = async (values) => {
   try {
     const user = await currentUser();

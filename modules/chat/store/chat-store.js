@@ -1,6 +1,16 @@
-import {create} from "zustand"
+import { create } from "zustand";
 
-export const useChatStore = create((set,get)=>({
-    activeChatId:null,
-    setActiveChatId:(chatId)=>set({activeChatId:chatId})
-}))
+export const useChatStore = create((set, get) => ({
+  chats: [],
+  activeChatId: null,
+  messages: [],
+
+  setChats: (chats) => set({ chats }),
+  setMessages: (messages) => set({ messages }),
+  setActiveChatId: (chatId) => set({ activeChatId: chatId }),
+
+  addChat: (chat) => set({ chats: [chat, ...get().chats] }),
+  addMessage: (message) => set({ messages: [...get().messages, message] }),
+
+  clearMessages: () => set({ messages: [] }),
+}));
