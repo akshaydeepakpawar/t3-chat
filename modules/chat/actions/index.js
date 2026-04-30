@@ -5,38 +5,6 @@ import { currentUser } from "@/modules/authentication/actions";
 import { MessageRole, MessageType } from "@prisma/client";
 import { revalidatePath } from "next/cache";
 
-export const getChatById = async (chatId) => {
-  const user = await currentUser();
-
-  if (!user)
-    return {
-      success: false,
-      message: "Unauthorized user",
-    };
-  try {
-    const chat = await db.Chat.findUnique({
-      where: {
-        id: chatId,
-        userId: user.id,
-      },
-      include: {
-        message: true,
-      },
-    });
-    return {
-      success: true,
-      message: "chat fetched suiccessfully",
-      data: chat,
-    };
-  } catch (error) {
-    console.error("Error in fetching chat:", error);
-    return {
-      success: false,
-      message: "failed to fetch chat",
-    };
-  }
-};
-
 export const createChatWithMessage = async (values) => {
   try {
     const user = await currentUser();
@@ -52,29 +20,31 @@ export const createChatWithMessage = async (values) => {
     if (!content || !content.trim()) {
       return { success: false, message: "Message content is required" };
     }
+
     const title = content.slice(0, 50) + (content.length > 50 ? "..." : "");
 
-    const chat = await db.Chat.create({
+    const chat = await db.chat.create({
       data: {
         title,
         model,
         userId: user.id,
-        message: {
+        messages: {
           create: {
             content,
             messageRole: MessageRole.USER,
-            messageType: MessageRole.NORMAL,
+            messageType: MessageType.NORMAL,
             model,
           },
         },
       },
       include: {
-        message: true,
+        messages: true,
       },
     });
+
     revalidatePath("/");
 
-    return { success: true, message: "Chat created Successfully", data: chat };
+    return { success: true, message: "Chat created successfully", data: chat };
   } catch (error) {
     console.error("Error creating chat:", error);
     return { success: false, message: "Failed to create chat" };
@@ -85,23 +55,25 @@ export const getAllChats = async () => {
   try {
     const user = await currentUser();
 
-    if (!user)
+    if (!user) {
       return {
         success: false,
         message: "Unauthorized user",
       };
+    }
 
-    const chats = await db.Chat.findMany({
+    const chats = await db.chat.findMany({
       where: {
         userId: user.id,
       },
       include: {
-        message: true,
+        messages: true,
       },
       orderBy: {
         createdAt: "desc",
       },
     });
+
     return {
       success: true,
       message: "Chats fetched successfully",
@@ -116,43 +88,83 @@ export const getAllChats = async () => {
   }
 };
 
-export const deleteChat = async (chatId) => {
+export const getChatById = async(chatId)=>{
+  const user = await currentUser();
+
+  if(!user){
+    return {
+      success:false,
+      message:"Unauthorized user"
+    }
+  }
+
+  try {
+    const chat = await db.chat.findUnique({
+      where:{
+        id:chatId,
+        userId:user.id
+      },
+      include:{
+        messages:true
+      }
+    })
+    
+    return {
+      success:true,
+      message:"Chat Fetched Successfully",
+      data:chat
+    }
+  } catch (error) {
+     console.error("Error fetching chat:", error);
+      return {
+        success: false,
+        message: "Failed to fetch chat"
+      };
+  }
+}
+
+
+export const deleteChat = async(chatId)=>{
   try {
     const user = await currentUser();
-    if (!user)
-      return {
-        success: false,
-        message: "Unauthorized user",
-      };
 
-    const chat = await db.Chat.findFirst({
-      where: {
-        id: chatId,
-        userId: user.id,
-      },
-    });
-    if (!chat) {
+    if(!user){
       return {
-        success: false,
-        message: "Chat not found",
-      };
+        success:false,
+        message:"Unauthorized user"
+      }
     }
 
-    await db.Chat.delete({
-      where: {
-        id: chatId,
-      },
-    });
+    const chat = await db.chat.findUnique({
+      where:{
+        id:chatId,
+        userId:user.id
+      }
+    })
+
+    if(!chat){
+      return {
+        success:false,
+        message:"Chat not found"
+      }
+    }
+
+    await db.chat.delete({
+      where:{
+        id:chatId
+      }
+    })
+
     revalidatePath("/");
     return {
       success: true,
-      message: "Chat deleted successfully",
+      message: "Chat deleted successfully"
     };
   } catch (error) {
-    console.error("Error deleting chat:", error);
+     console.error("Error deleting chat:", error);
     return {
       success: false,
-      message: "Failed to delete chat",
+      message: "Failed to delete chat"
     };
   }
-};
+}
