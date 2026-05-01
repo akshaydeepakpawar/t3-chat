@@ -34,12 +34,12 @@ const ChatSidebar = ({ user , chats }) => {
 
   const filteredChats = useMemo(()=>{
     if(!searchQuery.trim()){
-      return chats;
+      return chats || [];
     }
 
     const query = searchQuery.toLocaleLowerCase();
 
-    return chats.filter(chat=>
+    return (chats || []).filter(chat=>
 
      chat.title?.toLowerCase().includes(query) ||
        chat.messages?.some(msg => 
@@ -65,7 +65,7 @@ const ChatSidebar = ({ user , chats }) => {
       older: []
     };
 
-    filteredChats.forEach(chat => {
+    (filteredChats || []).forEach(chat => {
       const chatDate = new Date(chat.createdAt);
       
       if (chatDate >= today) {
@@ -175,7 +175,7 @@ const ChatSidebar = ({ user , chats }) => {
 
     <div className="flex-1 overflow-y-auto px-2">
    {
-    filteredChats.length === 0 ? (
+    (filteredChats || []).length === 0 ? (
        <div className="text-center text-sm text-muted-foreground py-8">
         {searchQuery ? "No Chats Founds" : "No Chats Yet"}
     </div>
