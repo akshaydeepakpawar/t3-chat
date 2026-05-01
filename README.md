@@ -1,36 +1,107 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# 🤖 T3 Chat App (AI Multi-Model Chat)
 
-## Getting Started
+A full-stack AI chat application built using the T3 stack, allowing users to interact with multiple AI models in real-time with a smooth and modern UI.
 
-First, run the development server:
+---
+
+## 🌐 Live Demo
+
+🔗 https://t3-chat-t395.vercel.app/
+
+---
+
+## ✨ Features
+
+* 💬 Real-time AI chat with streaming responses
+* 🤖 Support for multiple AI models (30+ models)
+* 🔐 Secure authentication system
+* 🧠 Chat history persistence
+* 🗑️ Create, manage & delete chats
+* ⚡ Fast and responsive UI
+* 📦 Scalable full-stack architecture
+
+---
+
+## 🧠 How It Works
+
+* Users sign in securely
+* Start a new chat session
+* Select an AI model
+* Messages are streamed in real-time
+* Chats are stored and can be revisited anytime
+
+---
+
+## 🛠️ Tech Stack
+
+* **Framework:** Next.js (App Router - T3 Stack)
+* **Frontend:** React.js + Tailwind CSS
+* **Backend:** tRPC (end-to-end typesafe APIs)
+* **Database:** PostgreSQL + Prisma ORM
+* **Authentication:** Better Auth
+* **AI Integration:** AI SDK (multi-model support)
+* **Deployment:** Vercel
+
+---
+
+## 📁 Project Structure
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+/app        → Routes & pages  
+/components → UI components  
+/modules    → Feature-based logic  
+/lib        → Database & utilities  
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+---
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## ⚙️ Installation & Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+# Clone repo
+git clone https://github.com/akshaydeepakpawar/t3-chat
 
-## Learn More
+# Go inside folder
+cd t3-chat
 
-To learn more about Next.js, take a look at the following resources:
+# Install dependencies
+bun install
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+# Setup env
+cp .env.example .env
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+# Run project
+bun run dev
+```
 
-## Deploy on Vercel
+---
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## 🔑 Environment Variables
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+```env
+DATABASE_URL=
+BETTER_AUTH_SECRET=
+AI_API_KEY=
+```
+
+---
+
+## 🚀 Future Improvements
+
+* 📱 Mobile UI optimization
+* 🎙️ Voice-based chat
+* 🧩 Plugin/tool integration
+* 📊 Usage analytics
+* 📎 File upload support
+
+---
+
+## 🙌 Acknowledgements
+
+Inspired by modern AI chat platforms and the T3 ecosystem.
+
+---
+
+## ⭐ Support
+
+If you like this project, give it a ⭐ on GitHub!
