@@ -2,7 +2,7 @@ import { auth } from "@/lib/auth";
 import { currentUser } from "@/modules/authentication/actions";
 import { getAllChats } from "@/modules/chat/actions";
 import ChatSidebar from "@/modules/chat/components/chat-sidebar";
-import Header from "@/modules/chat/components/header";
+import Header from "@/modules/chat/components/Header";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import React from "react";
