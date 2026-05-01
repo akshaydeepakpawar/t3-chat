@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import "./globals.css";
 import { Poppins } from "next/font/google";
 import { ThemeProvider } from "@/components/ui/theme-provider";

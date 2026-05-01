@@ -1,4 +1,4 @@
-// import UserButton from "@/modules/authentication/components/user-button";
+export const dynamic = "force-dynamic";
 import { currentUser } from "@/modules/authentication/actions/index";
 import ChatMessageView from "@/modules/chat/components/chat-message-view"
 
