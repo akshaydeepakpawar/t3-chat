@@ -101,7 +101,7 @@ const MessageWithForm = ({ chatId }) => {
     sendMessage(
       {
         role: "user",
-        parts: [{ type: "text" }],
+        parts: [{ type: "text", text: "" }],
       },
       {
         body: {
@@ -146,6 +146,9 @@ const MessageWithForm = ({ chatId }) => {
     );
 
     setInput("");
+    setTimeout(() => {
+      router.refresh();
+    }, 500);
   };
 
   const handleRetry = () => {
