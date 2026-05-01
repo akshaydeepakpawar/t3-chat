@@ -1,3 +1,4 @@
+export const dynamic = "force-dynamic";
 import ActiveChatLoader from '@/modules/messages/components/active-chat-loader';
 import MessageWithForm from '@/modules/messages/components/message-with-form';
 import React from 'react'
