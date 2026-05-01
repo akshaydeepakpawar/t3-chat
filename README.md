@@ -4,12 +4,6 @@ A full-stack AI chat application built using the T3 stack, allowing users to int
 
 ---
 
-## 🌐 Live Demo
-
-🔗 https://t3-chat-t395.vercel.app/
-
----
-
 ## ✨ Features
 
 * 💬 Real-time AI chat with streaming responses
